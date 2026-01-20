@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uship Van Lines Inc | Professional Long Distance Moving Services</title>
+    <meta name="description" content="Uship Van Lines Inc provides professional long-distance moving services across all 48 continental United States. Licensed, insured, and trusted.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GSAP for smooth animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mocha': {
+                            50: '#faf8f6',
+                            100: '#f0ebe5',
+                            200: '#e0d5c9',
+                            300: '#cbb8a5',
+                            400: '#b39880',
+                            500: '#a18165',
+                            600: '#8a6b52',
+                            700: '#735845',
+                            800: '#5f4a3b',
+                            900: '#3d3029',
+                            950: '#2a211c',
+                        },
+                        'cream': '#f5f0e8',
+                        'gold': '#c9a45c',
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Outfit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 3D Canvas container - ALWAYS ON TOP */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Particle canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Scene canvases */
+        .scene-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Content layer */
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Make sections semi-transparent so truck shows through */
+        .content-layer section {
+            background-color: transparent !important;
+        }
+
+        .content-layer section > div:first-child:not(.max-w-7xl):not(.max-w-4xl) {
+            opacity: 0.85;
+        }
+
+        /* Gradient overlays with transparency */
+        .bg-gradient-transparent {
+            background: linear-gradient(to bottom, rgba(42, 33, 28, 0.75), rgba(61, 48, 41, 0.7), rgba(42, 33, 28, 0.75)) !important;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2a211c;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #c9a45c, #8a6b52);
+            border-radius: 3px;
+        }
+
+        /* Glow effect for buttons */
+        .glow-gold {
+            box-shadow: 0 0 30px rgba(201, 164, 92, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glow-gold:hover {
+            box-shadow: 0 0 60px rgba(201, 164, 92, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Storytelling sections */
+        .story-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Magnetic button effect */
+        .magnetic-btn {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Form input styling */
+        .form-input {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(201, 164, 92, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .form-input:focus {
+            background: rgba(255,255,255,0.08);
+            border-color: #c9a45c;
+            outline: none;
+            box-shadow: 0 0 30px rgba(201, 164, 92, 0.15);
+        }
+
+        /* Horizontal scroll text */
+        .scroll-text {
+            animation: scrollText 30s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Floating elements */
+        .float-slow {
+            animation: floatSlow 8s ease-in-out infinite;
+        }
+
+        .float-medium {
+            animation: floatMedium 6s ease-in-out infinite;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        @keyframes floatMedium {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(-3deg); }
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #c9a45c 0%, #f5f0e8 50%, #c9a45c 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+
+        /* Step card hover */
+        .step-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(201, 164, 92, 0.5);
+        }
+
+        /* Reveal animations */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Noise overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Progress bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c9a45c, #f5f0e8);
+            z-index: 9999;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        /* Truck spotlight glow */
+        .truck-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(201, 164, 92, 0.3) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 99;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body class="bg-mocha-950 text-white">
+
+    <!-- Progress bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Noise overlay for texture -->
+    <div class="noise-overlay"></div>
+
+    <!-- Particle canvas background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Scene canvases for mini-cartoons -->
+    <canvas id="birds-canvas" class="scene-canvas" style="z-index: 2;"></canvas>
+    <canvas id="road-canvas" class="scene-canvas" style="z-index: 3;"></canvas>
+
+    <!-- Truck glow effect -->
+    <div id="truck-glow" class="truck-glow"></div>
+
+    <!-- 3D Canvas for truck -->
+    <div id="canvas-container"></div>
+
+    <!-- Main content -->
+    <div class="content-layer">
+
+        <!-- Header -->
+        <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-700">
+            <div class="absolute inset-0 bg-mocha-950/0 backdrop-blur-none transition-all duration-500" id="header-bg"></div>
+            <div class="relative max-w-7xl mx-auto px-6 py-5">
+                <div class="flex items-center justify-between">
+                    <!-- Logo -->
+                    <a href="#" class="flex items-center gap-3 group">
+                        <div class="relative">
+                            <div class="w-12 h-12 bg-gradient-to-br from-gold to-mocha-400 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                                <svg class="w-7 h-7 text-mocha-950" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                                </svg>
+                            </div>
+                            <div class="absolute -inset-1 bg-gold/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        </div>
+                        <div class="hidden sm:block">
+                            <div class="font-display text-xl font-semibold tracking-wide">Uship Van Lines</div>
+                            <div class="text-[10px] text-mocha-400 tracking-[0.2em] uppercase">Moving Dreams Forward</div>
+                        </div>
+                    </a>
+
+                    <!-- Navigation -->
+                    <nav class="hidden md:flex items-center gap-8">
+                        <a href="#home" class="relative text-sm font-medium text-mocha-300 hover:text-white transition-colors group">
+                            Home
+                            <span class="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+                        </a>
+                        <a href="#journey" class="relative text-sm font-medium text-mocha-300 hover:text-white transition-colors group">
+                            Journey
+                            <span class="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+                        </a>
+                        <a href="#quote" class="relative text-sm font-medium text-mocha-300 hover:text-white transition-colors group">
+                            Get Quote
+                            <span class="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300"></span>
+                        </a>
+                    </nav>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex items-center gap-4">
+                        <a href="tel:+18001234567" class="hidden sm:flex items-center gap-2 text-sm font-medium text-gold hover:text-white transition-colors">
+                            <div class="w-8 h-8 rounded-full border border-gold/30 flex items-center justify-center">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="#quote" class="magnetic-btn bg-gradient-to-r from-gold to-mocha-400 text-mocha-950 px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-gold/30 transition-all duration-500">
+                            Start Moving
+                        </a>
+
+                        <!-- Mobile menu button -->
+                        <button id="mobile-menu-btn" class="md:hidden p-2 text-mocha-200 hover:text-white">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden absolute top-full left-0 right-0 bg-mocha-900/98 backdrop-blur-xl border-t border-mocha-800">
+                <div class="px-6 py-6 space-y-4">
+                    <a href="#home" class="block text-lg font-medium text-mocha-200 hover:text-gold transition-colors">Home</a>
+                    <a href="#journey" class="block text-lg font-medium text-mocha-200 hover:text-gold transition-colors">Journey</a>
+                    <a href="#quote" class="block text-lg font-medium text-mocha-200 hover:text-gold transition-colors">Get Quote</a>
+                    <a href="tel:+18001234567" class="flex items-center gap-2 text-lg font-medium text-gold pt-4 border-t border-mocha-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                        </svg>
+                        1-800-123-4567
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <!-- Gradient background - semi-transparent for truck visibility -->
+            <div class="absolute inset-0 bg-gradient-to-b from-mocha-950/80 via-mocha-900/70 to-mocha-950/80"></div>
+
+            <!-- Animated circles -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-gold/5 blur-3xl float-slow"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-mocha-600/10 blur-3xl float-medium" style="animation-delay: -2s;"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-gold/5"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-gold/5"></div>
+            </div>
+
+            <!-- Hero content -->
+            <div class="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
+                <!-- Badge -->
+                <div class="reveal-up inline-flex items-center gap-3 bg-mocha-800/30 backdrop-blur-sm px-5 py-2.5 rounded-full mb-10 border border-mocha-700/30">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-gold"></span>
+                    </span>
+                    <span class="text-sm text-mocha-200">Trusted by 10,000+ families across America</span>
+                </div>
+
+                <!-- Main heading -->
+                <h1 class="reveal-up" style="transition-delay: 0.1s;">
+                    <span class="block font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium text-white leading-[1.1] tracking-tight">
+                        Your Journey
+                    </span>
+                    <span class="block font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium leading-[1.1] tracking-tight mt-2">
+                        <span class="gradient-text italic">Begins Here</span>
+                    </span>
+                </h1>
+
+                <!-- Description -->
+                <p class="reveal-up mt-8 text-lg sm:text-xl text-mocha-300 max-w-2xl mx-auto leading-relaxed" style="transition-delay: 0.2s;">
+                    We don't just move boxes. We carefully transport your memories, your dreams, and your new beginning across all 48 states.
+                </p>
+
+                <!-- CTA buttons -->
+                <div class="reveal-up mt-12 flex flex-col sm:flex-row items-center justify-center gap-5" style="transition-delay: 0.3s;">
+                    <a href="#quote" class="group relative magnetic-btn bg-gradient-to-r from-gold via-mocha-300 to-gold bg-[length:200%_100%] text-mocha-950 px-10 py-4 rounded-full text-lg font-semibold transition-all duration-500 hover:bg-right glow-gold">
+                        <span class="relative z-10 flex items-center gap-3">
+                            Begin Your Story
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <a href="#journey" class="group flex items-center gap-3 text-mocha-300 hover:text-white px-6 py-4 transition-colors">
+                        <div class="w-14 h-14 rounded-full border border-mocha-600 flex items-center justify-center group-hover:border-gold group-hover:bg-gold/10 transition-all duration-500">
+                            <svg class="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                            </svg>
+                        </div>
+                        <span class="text-lg">Explore Journey</span>
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="reveal-up mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto" style="transition-delay: 0.4s;">
+                    <div class="text-center group">
+                        <div class="text-4xl sm:text-5xl font-display font-bold text-gold group-hover:scale-110 transition-transform">48</div>
+                        <div class="text-xs text-mocha-400 mt-2 uppercase tracking-[0.2em]">States</div>
+                    </div>
+                    <div class="text-center group">
+                        <div class="text-4xl sm:text-5xl font-display font-bold text-gold group-hover:scale-110 transition-transform">10K+</div>
+                        <div class="text-xs text-mocha-400 mt-2 uppercase tracking-[0.2em]">Stories</div>
+                    </div>
+                    <div class="text-center group">
+                        <div class="text-4xl sm:text-5xl font-display font-bold text-gold group-hover:scale-110 transition-transform">4.9</div>
+                        <div class="text-xs text-mocha-400 mt-2 uppercase tracking-[0.2em]">Rating</div>
+                    </div>
+                    <div class="text-center group">
+                        <div class="text-4xl sm:text-5xl font-display font-bold text-gold group-hover:scale-110 transition-transform">15+</div>
+                        <div class="text-xs text-mocha-400 mt-2 uppercase tracking-[0.2em]">Years</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+                <span class="text-xs text-mocha-500 uppercase tracking-[0.3em]">Scroll to explore</span>
+                <div class="w-6 h-10 rounded-full border-2 border-mocha-600 flex items-start justify-center p-1">
+                    <div class="w-1.5 h-3 bg-gold rounded-full animate-bounce"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Horizontal scrolling text divider -->
+        <div class="relative py-8 bg-mocha-900/40 border-y border-mocha-800/30 overflow-hidden">
+            <div class="scroll-text whitespace-nowrap flex">
+                <span class="text-6xl md:text-8xl font-display font-bold text-mocha-800/30 mx-8">CROSS COUNTRY</span>
+                <span class="text-6xl md:text-8xl font-display font-bold text-gold/20 mx-8">MOVING</span>
+                <span class="text-6xl md:text-8xl font-display font-bold text-mocha-800/30 mx-8">NEW BEGINNINGS</span>
+                <span class="text-6xl md:text-8xl font-display font-bold text-gold/20 mx-8">TRUSTED</span>
+                <span class="text-6xl md:text-8xl font-display font-bold text-mocha-800/30 mx-8">CROSS COUNTRY</span>
+                <span class="text-6xl md:text-8xl font-display font-bold text-gold/20 mx-8">MOVING</span>
+                <span class="text-6xl md:text-8xl font-display font-bold text-mocha-800/30 mx-8">NEW BEGINNINGS</span>
+                <span class="text-6xl md:text-8xl font-display font-bold text-gold/20 mx-8">TRUSTED</span>
+            </div>
+        </div>
+
+        <!-- Journey/Storytelling Section -->
+        <section id="journey" class="relative">
+            <!-- Chapter 1: The Beginning - With Loading Boxes Animation -->
+            <div class="story-section bg-gradient-to-b from-mocha-950/70 to-mocha-900/70 relative">
+                <!-- Canvas for loading boxes mini-cartoon -->
+                <canvas id="boxes-canvas" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;"></canvas>
+
+                <div class="max-w-7xl mx-auto px-6 py-32 relative z-10">
+                    <div class="grid lg:grid-cols-2 gap-16 items-center">
+                        <div class="reveal-left">
+                            <span class="text-gold text-xs uppercase tracking-[0.3em] font-medium">Chapter 01</span>
+                            <h2 class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight">
+                                The <span class="italic text-gold">Pickup</span>
+                            </h2>
+                            <p class="mt-6 text-mocha-300 text-lg leading-relaxed">
+                                Your journey begins with a single decision. Our team arrives at your doorstep — not just as movers, but as the first chapter of your new story. Every item wrapped with care, every box labeled with precision.
+                            </p>
+                            <div class="mt-10 space-y-4">
+                                <div class="flex items-center gap-4 text-mocha-300">
+                                    <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span>Professional packing materials</span>
+                                </div>
+                                <div class="flex items-center gap-4 text-mocha-300">
+                                    <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span>Detailed inventory system</span>
+                                </div>
+                                <div class="flex items-center gap-4 text-mocha-300">
+                                    <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                    </div>
+                                    <span>Trained & background-checked crew</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reveal-right relative">
+                            <div class="relative aspect-square max-w-lg mx-auto">
+                                <div class="absolute inset-0 bg-gradient-to-br from-gold/20 to-transparent rounded-3xl"></div>
+                                <div class="absolute inset-4 bg-mocha-800/50 rounded-2xl backdrop-blur-sm border border-mocha-700/50 flex items-center justify-center">
+                                    <div class="text-center p-8">
+                                        <div class="w-24 h-24 mx-auto bg-gold/10 rounded-2xl flex items-center justify-center mb-6 float-slow">
+                                            <svg class="w-12 h-12 text-gold" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                            </svg>
+                                        </div>
+                                        <h4 class="font-display text-2xl text-white mb-2">Your Location</h4>
+                                        <p class="text-mocha-400">Where your journey begins</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter 2: The Journey - With Road Animation -->
+            <div class="story-section bg-mocha-900/70 relative">
+                <!-- Canvas for road/driving mini-cartoon -->
+                <canvas id="journey-canvas" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;"></canvas>
+
+                <div class="max-w-7xl mx-auto px-6 py-32 relative z-10">
+                    <div class="grid lg:grid-cols-2 gap-16 items-center">
+                        <div class="order-2 lg:order-1 reveal-left relative">
+                            <div class="relative aspect-[4/3] max-w-lg mx-auto bg-mocha-800/30 rounded-3xl border border-mocha-700/30 overflow-hidden">
+                                <!-- Mini animated scene placeholder -->
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="text-6xl mb-4">🛣️</div>
+                                        <p class="text-mocha-400 text-sm">Watch the journey unfold</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-1 lg:order-2 reveal-right">
+                            <span class="text-gold text-xs uppercase tracking-[0.3em] font-medium">Chapter 02</span>
+                            <h2 class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight">
+                                The <span class="italic text-gold">Journey</span>
+                            </h2>
+                            <p class="mt-6 text-mocha-300 text-lg leading-relaxed">
+                                Miles become memories as your belongings travel safely across the country. Real-time GPS tracking lets you follow every mile of the journey, while our climate-controlled fleet ensures everything arrives just as it left.
+                            </p>
+                            <div class="mt-10 grid grid-cols-2 gap-6">
+                                <div class="bg-mocha-800/30 rounded-2xl p-6 border border-mocha-700/30">
+                                    <div class="text-3xl font-display font-bold text-gold">24/7</div>
+                                    <div class="text-sm text-mocha-400 mt-1">GPS Tracking</div>
+                                </div>
+                                <div class="bg-mocha-800/30 rounded-2xl p-6 border border-mocha-700/30">
+                                    <div class="text-3xl font-display font-bold text-gold">100%</div>
+                                    <div class="text-sm text-mocha-400 mt-1">Insured Transit</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter 3: The Arrival - With City Skyline Animation -->
+            <div class="story-section bg-gradient-to-b from-mocha-900/70 to-mocha-950/70 relative">
+                <!-- Canvas for city arrival mini-cartoon -->
+                <canvas id="city-canvas" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;"></canvas>
+
+                <div class="max-w-7xl mx-auto px-6 py-32 relative z-10">
+                    <div class="grid lg:grid-cols-2 gap-16 items-center">
+                        <div class="reveal-left">
+                            <span class="text-gold text-xs uppercase tracking-[0.3em] font-medium">Chapter 03</span>
+                            <h2 class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight">
+                                The <span class="italic text-gold">Arrival</span>
+                            </h2>
+                            <p class="mt-6 text-mocha-300 text-lg leading-relaxed">
+                                A new door opens. A new chapter begins. We don't just unload — we help you settle in. Furniture placed exactly where you want it, boxes organized room by room. Your new home, ready to make new memories.
+                            </p>
+                            <a href="#quote" class="inline-flex items-center gap-3 mt-10 bg-gradient-to-r from-gold to-mocha-400 text-mocha-950 px-8 py-4 rounded-full text-lg font-semibold hover:shadow-lg hover:shadow-gold/30 transition-all duration-500 glow-gold">
+                                <span>Start Your Story</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="reveal-right relative">
+                            <div class="relative aspect-square max-w-lg mx-auto">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-gold/20 to-transparent rounded-3xl"></div>
+                                <div class="absolute inset-4 bg-mocha-800/50 rounded-2xl backdrop-blur-sm border border-mocha-700/50 flex items-center justify-center">
+                                    <div class="text-center p-8">
+                                        <div class="w-24 h-24 mx-auto bg-gold/10 rounded-2xl flex items-center justify-center mb-6 float-slow">
+                                            <svg class="w-12 h-12 text-gold" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                                            </svg>
+                                        </div>
+                                        <h4 class="font-display text-2xl text-white mb-2">New Home</h4>
+                                        <p class="text-mocha-400">Where your story continues</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Steps -->
+        <section class="relative py-32 bg-mocha-950/70 overflow-hidden">
+            <!-- Background text -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <span class="text-[20vw] font-display font-bold text-mocha-900/20 whitespace-nowrap">PROCESS</span>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-6">
+                <div class="text-center mb-20 reveal-up">
+                    <span class="text-gold text-xs uppercase tracking-[0.3em] font-medium">Simple & Transparent</span>
+                    <h2 class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-medium">
+                        How It <span class="italic text-gold">Works</span>
+                    </h2>
+                </div>
+
+                <!-- Steps -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="step-card reveal-up bg-mocha-900/30 rounded-3xl p-8 border border-mocha-800/50 backdrop-blur-sm">
+                        <div class="w-14 h-14 bg-gradient-to-br from-gold/20 to-transparent rounded-2xl flex items-center justify-center mb-6">
+                            <span class="text-2xl font-display font-bold text-gold">01</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Request Quote</h3>
+                        <p class="text-mocha-400 leading-relaxed text-sm">
+                            Fill out our simple form and receive a transparent, no-obligation quote.
+                        </p>
+                    </div>
+
+                    <div class="step-card reveal-up bg-mocha-900/30 rounded-3xl p-8 border border-mocha-800/50 backdrop-blur-sm" style="transition-delay: 0.1s;">
+                        <div class="w-14 h-14 bg-gradient-to-br from-gold/20 to-transparent rounded-2xl flex items-center justify-center mb-6">
+                            <span class="text-2xl font-display font-bold text-gold">02</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Schedule Move</h3>
+                        <p class="text-mocha-400 leading-relaxed text-sm">
+                            Pick your preferred dates and we'll confirm your personalized moving plan.
+                        </p>
+                    </div>
+
+                    <div class="step-card reveal-up bg-mocha-900/30 rounded-3xl p-8 border border-mocha-800/50 backdrop-blur-sm" style="transition-delay: 0.2s;">
+                        <div class="w-14 h-14 bg-gradient-to-br from-gold/20 to-transparent rounded-2xl flex items-center justify-center mb-6">
+                            <span class="text-2xl font-display font-bold text-gold">03</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">We Pack & Load</h3>
+                        <p class="text-mocha-400 leading-relaxed text-sm">
+                            Our expert team handles everything with care and precision.
+                        </p>
+                    </div>
+
+                    <div class="step-card reveal-up bg-mocha-900/30 rounded-3xl p-8 border border-mocha-800/50 backdrop-blur-sm" style="transition-delay: 0.3s;">
+                        <div class="w-14 h-14 bg-gradient-to-br from-gold/20 to-transparent rounded-2xl flex items-center justify-center mb-6">
+                            <span class="text-2xl font-display font-bold text-gold">04</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Welcome Home</h3>
+                        <p class="text-mocha-400 leading-relaxed text-sm">
+                            We deliver, unpack, and set up your new space exactly how you want it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quote Form Section -->
+        <section id="quote" class="relative py-32 bg-gradient-to-b from-mocha-900/80 to-mocha-950/80 overflow-hidden">
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute top-0 left-1/4 w-96 h-96 bg-gold/5 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-mocha-600/5 rounded-full blur-3xl"></div>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-6">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="reveal-left">
+                        <span class="text-gold text-xs uppercase tracking-[0.3em] font-medium">Free Consultation</span>
+                        <h2 class="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-medium leading-tight">
+                            Start Your <br><span class="italic text-gold">Journey Today</span>
+                        </h2>
+                        <p class="mt-6 text-mocha-300 text-lg leading-relaxed">
+                            Every great story starts with a single step. Get your personalized quote and let us help write your next chapter.
+                        </p>
+
+                        <div class="mt-12 space-y-6">
+                            <div class="flex items-center gap-5">
+                                <div class="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-7 h-7 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white">Guaranteed Pricing</h4>
+                                    <p class="text-mocha-400 text-sm mt-1">No hidden fees, ever</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-5">
+                                <div class="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-7 h-7 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white">Quick Response</h4>
+                                    <p class="text-mocha-400 text-sm mt-1">Quote within 30 minutes</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-5">
+                                <div class="w-14 h-14 bg-gold/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-7 h-7 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-white">Fully Insured</h4>
+                                    <p class="text-mocha-400 text-sm mt-1">Your belongings protected</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reveal-right">
+                        <div class="bg-mocha-800/30 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-mocha-700/30 shadow-2xl shadow-black/20">
+                            <form id="quote-form" class="space-y-6">
+                                <div class="grid sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-xs text-mocha-400 mb-2 uppercase tracking-wider">Move Date</label>
+                                        <input type="date" class="w-full form-input rounded-xl px-4 py-3.5 text-white" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-mocha-400 mb-2 uppercase tracking-wider">Move Type</label>
+                                        <select class="w-full form-input rounded-xl px-4 py-3.5 text-white" required>
+                                            <option value="">Select type</option>
+                                            <option value="long-distance">Long Distance</option>
+                                            <option value="residential">Residential</option>
+                                            <option value="commercial">Commercial</option>
+                                            <option value="storage">Storage</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs text-mocha-400 mb-2 uppercase tracking-wider">Moving From</label>
+                                    <input type="text" placeholder="City, State" class="w-full form-input rounded-xl px-4 py-3.5 text-white placeholder-mocha-600" required>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs text-mocha-400 mb-2 uppercase tracking-wider">Moving To</label>
+                                    <input type="text" placeholder="City, State" class="w-full form-input rounded-xl px-4 py-3.5 text-white placeholder-mocha-600" required>
+                                </div>
+
+                                <div class="grid sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-xs text-mocha-400 mb-2 uppercase tracking-wider">Phone</label>
+                                        <input type="tel" placeholder="(555) 123-4567" class="w-full form-input rounded-xl px-4 py-3.5 text-white placeholder-mocha-600" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-mocha-400 mb-2 uppercase tracking-wider">Email</label>
+                                        <input type="email" placeholder="your@email.com" class="w-full form-input rounded-xl px-4 py-3.5 text-white placeholder-mocha-600" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-gradient-to-r from-gold via-mocha-300 to-gold bg-[length:200%_100%] text-mocha-950 py-4 rounded-xl text-lg font-semibold hover:bg-right transition-all duration-500 glow-gold flex items-center justify-center gap-3">
+                                    <span>Get My Free Quote</span>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                    </svg>
+                                </button>
+
+                                <p class="text-center text-mocha-500 text-xs">
+                                    By submitting, you agree to receive communications from Uship Van Lines.
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="relative py-32 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-gold/90 via-mocha-400/90 to-gold/90"></div>
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, #2a211c 1px, transparent 0); background-size: 40px 40px;"></div>
+
+            <div class="relative max-w-4xl mx-auto px-6 text-center">
+                <h2 class="reveal-scale font-display text-4xl sm:text-5xl lg:text-6xl font-medium text-mocha-950 leading-tight">
+                    Ready to Write <br>Your Next Chapter?
+                </h2>
+                <p class="reveal-up mt-6 text-mocha-800 text-lg max-w-2xl mx-auto" style="transition-delay: 0.1s;">
+                    Join thousands of families who trusted us with their journey.
+                </p>
+                <div class="reveal-up mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" style="transition-delay: 0.2s;">
+                    <a href="#quote" class="group flex items-center gap-3 bg-mocha-950 text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-mocha-900 transition-all duration-500 shadow-lg shadow-black/20">
+                        <span>Begin Your Journey</span>
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a href="tel:+18001234567" class="flex items-center gap-3 text-mocha-950 hover:text-mocha-700 px-6 py-4 transition-colors font-medium">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                        </svg>
+                        <span>1-800-123-4567</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-mocha-950/90 border-t border-mocha-800/50 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-6 py-16">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 bg-gradient-to-br from-gold to-mocha-400 rounded-xl flex items-center justify-center">
+                                <svg class="w-7 h-7 text-mocha-950" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-display text-xl font-semibold">Uship Van Lines Inc</div>
+                                <div class="text-[10px] text-mocha-500 tracking-[0.2em] uppercase">Moving Dreams Forward</div>
+                            </div>
+                        </div>
+                        <p class="text-mocha-400 leading-relaxed max-w-md text-sm">
+                            Professional long-distance moving services across all 48 continental United States.
+                        </p>
+                        <div class="mt-6 flex items-center gap-4 text-xs text-mocha-500">
+                            <span>DOT: 1234567</span>
+                            <span class="w-px h-3 bg-mocha-700"></span>
+                            <span>MC: 987654</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-white mb-6 text-sm uppercase tracking-wider">Navigate</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#home" class="text-mocha-400 hover:text-gold transition-colors text-sm">Home</a></li>
+                            <li><a href="#journey" class="text-mocha-400 hover:text-gold transition-colors text-sm">Journey</a></li>
+                            <li><a href="#quote" class="text-mocha-400 hover:text-gold transition-colors text-sm">Get Quote</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-semibold text-white mb-6 text-sm uppercase tracking-wider">Contact</h4>
+                        <ul class="space-y-4">
+                            <li>
+                                <a href="tel:+18001234567" class="flex items-center gap-3 text-mocha-400 hover:text-gold transition-colors text-sm">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/>
+                                    </svg>
+                                    1-800-123-4567
+                                </a>
+                            </li>
+                            <li>
+                                <a href="mailto:info@ushipvanlines.com" class="flex items-center gap-3 text-mocha-400 hover:text-gold transition-colors text-sm">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                    info@ushipvanlines.com
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-16 pt-8 border-t border-mocha-800/50">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <p class="text-mocha-500 text-xs">&copy; 2024 Uship Van Lines Inc. All rights reserved.</p>
+                        <p class="text-mocha-600 text-[10px]">All moves are subject to carrier availability.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // ==========================================
+        // PARTICLE SYSTEM - Background
+        // ==========================================
+        const particleCanvas = document.getElementById('particle-canvas');
+        const pCtx = particleCanvas.getContext('2d');
+
+        function resizeParticleCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        resizeParticleCanvas();
+        window.addEventListener('resize', resizeParticleCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * particleCanvas.width;
+                this.y = Math.random() * particleCanvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.4 + 0.1;
+                this.color = Math.random() > 0.5 ? '#c9a45c' : '#8a6b52';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > particleCanvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > particleCanvas.height) this.speedY *= -1;
+            }
+            draw() {
+                pCtx.beginPath();
+                pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                pCtx.fillStyle = this.color;
+                pCtx.globalAlpha = this.opacity;
+                pCtx.fill();
+                pCtx.globalAlpha = 1;
+            }
+        }
+
+        const particles = [];
+        for (let i = 0; i < 60; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        pCtx.beginPath();
+                        pCtx.moveTo(p1.x, p1.y);
+                        pCtx.lineTo(p2.x, p2.y);
+                        pCtx.strokeStyle = '#c9a45c';
+                        pCtx.globalAlpha = 0.03 * (1 - dist / 120);
+                        pCtx.stroke();
+                        pCtx.globalAlpha = 1;
+                    }
+                });
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ==========================================
+        // BIRDS CANVAS - Flying birds animation
+        // ==========================================
+        const birdsCanvas = document.getElementById('birds-canvas');
+        const bCtx = birdsCanvas.getContext('2d');
+
+        function resizeBirdsCanvas() {
+            birdsCanvas.width = window.innerWidth;
+            birdsCanvas.height = window.innerHeight;
+        }
+        resizeBirdsCanvas();
+        window.addEventListener('resize', resizeBirdsCanvas);
+
+        class Bird {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = -50;
+                this.y = Math.random() * birdsCanvas.height * 0.4 + 50;
+                this.speed = Math.random() * 2 + 1;
+                this.wingAngle = 0;
+                this.wingSpeed = Math.random() * 0.15 + 0.1;
+                this.size = Math.random() * 8 + 6;
+            }
+            update() {
+                this.x += this.speed;
+                this.y += Math.sin(this.x * 0.02) * 0.5;
+                this.wingAngle += this.wingSpeed;
+                if (this.x > birdsCanvas.width + 50) this.reset();
+            }
+            draw() {
+                bCtx.save();
+                bCtx.translate(this.x, this.y);
+                bCtx.strokeStyle = '#c9a45c';
+                bCtx.lineWidth = 2;
+                bCtx.globalAlpha = 0.4;
+
+                // Draw bird as simple V shape with flapping
+                const wingY = Math.sin(this.wingAngle) * 5;
+                bCtx.beginPath();
+                bCtx.moveTo(-this.size, wingY);
+                bCtx.lineTo(0, 0);
+                bCtx.lineTo(this.size, wingY);
+                bCtx.stroke();
+
+                bCtx.restore();
+            }
+        }
+
+        const birds = [];
+        for (let i = 0; i < 8; i++) {
+            const bird = new Bird();
+            bird.x = Math.random() * birdsCanvas.width;
+            birds.push(bird);
+        }
+
+        function animateBirds() {
+            bCtx.clearRect(0, 0, birdsCanvas.width, birdsCanvas.height);
+            birds.forEach(bird => { bird.update(); bird.draw(); });
+            requestAnimationFrame(animateBirds);
+        }
+        animateBirds();
+
+        // ==========================================
+        // ROAD CANVAS - Moving road lines
+        // ==========================================
+        const roadCanvas = document.getElementById('road-canvas');
+        const rCtx = roadCanvas.getContext('2d');
+
+        function resizeRoadCanvas() {
+            roadCanvas.width = window.innerWidth;
+            roadCanvas.height = window.innerHeight;
+        }
+        resizeRoadCanvas();
+        window.addEventListener('resize', resizeRoadCanvas);
+
+        let roadOffset = 0;
+
+        function drawRoad() {
+            rCtx.clearRect(0, 0, roadCanvas.width, roadCanvas.height);
+
+            const roadY = roadCanvas.height - 80;
+
+            // Road surface
+            rCtx.fillStyle = 'rgba(61, 48, 41, 0.3)';
+            rCtx.fillRect(0, roadY, roadCanvas.width, 60);
+
+            // Road lines (dashed center line)
+            rCtx.strokeStyle = '#c9a45c';
+            rCtx.lineWidth = 3;
+            rCtx.setLineDash([30, 20]);
+            rCtx.lineDashOffset = -roadOffset;
+            rCtx.globalAlpha = 0.4;
+
+            rCtx.beginPath();
+            rCtx.moveTo(0, roadY + 30);
+            rCtx.lineTo(roadCanvas.width, roadY + 30);
+            rCtx.stroke();
+
+            rCtx.setLineDash([]);
+            rCtx.globalAlpha = 1;
+
+            roadOffset += 2;
+        }
+
+        function animateRoad() {
+            drawRoad();
+            requestAnimationFrame(animateRoad);
+        }
+        animateRoad();
+
+        // ==========================================
+        // BOXES CANVAS - Floating boxes animation
+        // ==========================================
+        const boxesCanvas = document.getElementById('boxes-canvas');
+        if (boxesCanvas) {
+            const boxCtx = boxesCanvas.getContext('2d');
+
+            function resizeBoxesCanvas() {
+                boxesCanvas.width = boxesCanvas.parentElement.offsetWidth;
+                boxesCanvas.height = boxesCanvas.parentElement.offsetHeight;
+            }
+            resizeBoxesCanvas();
+            window.addEventListener('resize', resizeBoxesCanvas);
+
+            class Box {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * boxesCanvas.width;
+                    this.y = boxesCanvas.height + 50;
+                    this.size = Math.random() * 30 + 20;
+                    this.speed = Math.random() * 0.5 + 0.3;
+                    this.rotation = Math.random() * Math.PI * 2;
+                    this.rotSpeed = (Math.random() - 0.5) * 0.02;
+                    this.opacity = Math.random() * 0.3 + 0.1;
+                }
+                update() {
+                    this.y -= this.speed;
+                    this.rotation += this.rotSpeed;
+                    if (this.y < -50) this.reset();
+                }
+                draw() {
+                    boxCtx.save();
+                    boxCtx.translate(this.x, this.y);
+                    boxCtx.rotate(this.rotation);
+                    boxCtx.globalAlpha = this.opacity;
+
+                    // Draw box
+                    boxCtx.strokeStyle = '#c9a45c';
+                    boxCtx.lineWidth = 2;
+                    boxCtx.strokeRect(-this.size/2, -this.size/2, this.size, this.size);
+
+                    // Draw tape
+                    boxCtx.strokeStyle = '#8a6b52';
+                    boxCtx.beginPath();
+                    boxCtx.moveTo(-this.size/2, 0);
+                    boxCtx.lineTo(this.size/2, 0);
+                    boxCtx.stroke();
+
+                    boxCtx.restore();
+                }
+            }
+
+            const boxes = [];
+            for (let i = 0; i < 12; i++) {
+                const box = new Box();
+                box.y = Math.random() * boxesCanvas.height;
+                boxes.push(box);
+            }
+
+            function animateBoxes() {
+                boxCtx.clearRect(0, 0, boxesCanvas.width, boxesCanvas.height);
+                boxes.forEach(box => { box.update(); box.draw(); });
+                requestAnimationFrame(animateBoxes);
+            }
+            animateBoxes();
+        }
+
+        // ==========================================
+        // JOURNEY CANVAS - Mountains & road scene
+        // ==========================================
+        const journeyCanvas = document.getElementById('journey-canvas');
+        if (journeyCanvas) {
+            const jCtx = journeyCanvas.getContext('2d');
+
+            function resizeJourneyCanvas() {
+                journeyCanvas.width = journeyCanvas.parentElement.offsetWidth;
+                journeyCanvas.height = journeyCanvas.parentElement.offsetHeight;
+            }
+            resizeJourneyCanvas();
+            window.addEventListener('resize', resizeJourneyCanvas);
+
+            let jOffset = 0;
+
+            function drawJourneyScene() {
+                jCtx.clearRect(0, 0, journeyCanvas.width, journeyCanvas.height);
+
+                const h = journeyCanvas.height;
+                const w = journeyCanvas.width;
+
+                // Draw distant mountains
+                jCtx.globalAlpha = 0.1;
+                jCtx.fillStyle = '#c9a45c';
+                jCtx.beginPath();
+                jCtx.moveTo(0, h * 0.6);
+                for (let x = 0; x < w; x += 100) {
+                    const peakHeight = Math.sin((x + jOffset * 0.1) * 0.01) * 50 + h * 0.4;
+                    jCtx.lineTo(x + 50, peakHeight);
+                    jCtx.lineTo(x + 100, h * 0.5 + Math.random() * 20);
+                }
+                jCtx.lineTo(w, h);
+                jCtx.lineTo(0, h);
+                jCtx.closePath();
+                jCtx.fill();
+
+                // Draw clouds
+                jCtx.globalAlpha = 0.15;
+                jCtx.fillStyle = '#f5f0e8';
+                for (let i = 0; i < 5; i++) {
+                    const cx = ((i * 200 + jOffset * 0.2) % (w + 200)) - 100;
+                    const cy = 80 + i * 30;
+                    jCtx.beginPath();
+                    jCtx.ellipse(cx, cy, 60, 25, 0, 0, Math.PI * 2);
+                    jCtx.fill();
+                    jCtx.beginPath();
+                    jCtx.ellipse(cx + 40, cy + 10, 40, 20, 0, 0, Math.PI * 2);
+                    jCtx.fill();
+                }
+
+                jCtx.globalAlpha = 1;
+                jOffset += 0.5;
+            }
+
+            function animateJourney() {
+                drawJourneyScene();
+                requestAnimationFrame(animateJourney);
+            }
+            animateJourney();
+        }
+
+        // ==========================================
+        // CITY CANVAS - City skyline
+        // ==========================================
+        const cityCanvas = document.getElementById('city-canvas');
+        if (cityCanvas) {
+            const cCtx = cityCanvas.getContext('2d');
+
+            function resizeCityCanvas() {
+                cityCanvas.width = cityCanvas.parentElement.offsetWidth;
+                cityCanvas.height = cityCanvas.parentElement.offsetHeight;
+            }
+            resizeCityCanvas();
+            window.addEventListener('resize', resizeCityCanvas);
+
+            const buildings = [];
+            for (let i = 0; i < 20; i++) {
+                buildings.push({
+                    x: i * 80,
+                    width: Math.random() * 40 + 30,
+                    height: Math.random() * 150 + 80,
+                    windows: Math.floor(Math.random() * 8) + 4
+                });
+            }
+
+            let cityLights = [];
+            for (let i = 0; i < 30; i++) {
+                cityLights.push({
+                    x: Math.random() * cityCanvas.width,
+                    y: Math.random() * cityCanvas.height * 0.5 + cityCanvas.height * 0.3,
+                    blink: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 0.05 + 0.02
+                });
+            }
+
+            function drawCity() {
+                cCtx.clearRect(0, 0, cityCanvas.width, cityCanvas.height);
+
+                const h = cityCanvas.height;
+
+                // Draw buildings
+                cCtx.globalAlpha = 0.15;
+                buildings.forEach((b, i) => {
+                    cCtx.fillStyle = '#3d3029';
+                    cCtx.fillRect(b.x, h - b.height, b.width, b.height);
+
+                    // Windows
+                    cCtx.fillStyle = '#c9a45c';
+                    for (let row = 0; row < b.windows; row++) {
+                        for (let col = 0; col < 3; col++) {
+                            if (Math.random() > 0.3) {
+                                cCtx.globalAlpha = Math.random() * 0.2 + 0.1;
+                                cCtx.fillRect(
+                                    b.x + 5 + col * 12,
+                                    h - b.height + 10 + row * 18,
+                                    8, 12
+                                );
+                            }
+                        }
+                    }
+                });
+
+                // Draw blinking lights
+                cityLights.forEach(light => {
+                    light.blink += light.speed;
+                    cCtx.globalAlpha = (Math.sin(light.blink) + 1) * 0.15;
+                    cCtx.fillStyle = '#c9a45c';
+                    cCtx.beginPath();
+                    cCtx.arc(light.x, light.y, 2, 0, Math.PI * 2);
+                    cCtx.fill();
+                });
+
+                cCtx.globalAlpha = 1;
+            }
+
+            function animateCity() {
+                drawCity();
+                requestAnimationFrame(animateCity);
+            }
+            animateCity();
+        }
+
+        // ==========================================
+        // THREE.JS 3D TRUCK - FULLY DETAILED
+        // ==========================================
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        // Create detailed truck
+        const truckGroup = new THREE.Group();
+
+        // Materials
+        const goldMaterial = new THREE.MeshPhongMaterial({
+            color: 0xc9a45c,
+            flatShading: false,
+            shininess: 100,
+            specular: 0x444444
+        });
+
+        const darkGoldMaterial = new THREE.MeshPhongMaterial({
+            color: 0x8a6b52,
+            flatShading: false,
+            shininess: 80
+        });
+
+        const darkMaterial = new THREE.MeshPhongMaterial({
+            color: 0x2a211c,
+            flatShading: false,
+            shininess: 30
+        });
+
+        const chromeMaterial = new THREE.MeshPhongMaterial({
+            color: 0xcccccc,
+            shininess: 150,
+            specular: 0xffffff
+        });
+
+        const glassMaterial = new THREE.MeshPhongMaterial({
+            color: 0x87ceeb,
+            transparent: true,
+            opacity: 0.4,
+            shininess: 200
+        });
+
+        const lightMaterial = new THREE.MeshPhongMaterial({
+            color: 0xffff00,
+            emissive: 0xffff00,
+            emissiveIntensity: 0.5
+        });
+
+        // CARGO BODY (main container)
+        const bodyGeometry = new THREE.BoxGeometry(4.5, 2.5, 2.2);
+        const body = new THREE.Mesh(bodyGeometry, goldMaterial);
+        body.position.set(-1, 1.5, 0);
+        body.castShadow = true;
+        truckGroup.add(body);
+
+        // Body details - horizontal lines
+        for (let i = 0; i < 5; i++) {
+            const lineGeo = new THREE.BoxGeometry(4.5, 0.05, 0.05);
+            const line = new THREE.Mesh(lineGeo, darkGoldMaterial);
+            line.position.set(-1, 0.5 + i * 0.5, 1.12);
+            truckGroup.add(line);
+            const line2 = line.clone();
+            line2.position.z = -1.12;
+            truckGroup.add(line2);
+        }
+
+        // Company name stripe
+        const stripeGeo = new THREE.BoxGeometry(3.5, 0.4, 0.02);
+        const stripe = new THREE.Mesh(stripeGeo, darkGoldMaterial);
+        stripe.position.set(-1, 2, 1.12);
+        truckGroup.add(stripe);
+
+        // CABIN
+        const cabinGeo = new THREE.BoxGeometry(1.8, 1.8, 2);
+        const cabin = new THREE.Mesh(cabinGeo, darkGoldMaterial);
+        cabin.position.set(2.3, 1.1, 0);
+        cabin.castShadow = true;
+        truckGroup.add(cabin);
+
+        // Cabin roof
+        const roofGeo = new THREE.BoxGeometry(1.9, 0.3, 2.1);
+        const roof = new THREE.Mesh(roofGeo, darkGoldMaterial);
+        roof.position.set(2.3, 2.1, 0);
+        truckGroup.add(roof);
+
+        // Hood
+        const hoodGeo = new THREE.BoxGeometry(0.8, 0.8, 1.8);
+        const hood = new THREE.Mesh(hoodGeo, darkGoldMaterial);
+        hood.position.set(3.5, 0.6, 0);
+        truckGroup.add(hood);
+
+        // Windshield
+        const windshieldGeo = new THREE.BoxGeometry(0.1, 1, 1.6);
+        const windshield = new THREE.Mesh(windshieldGeo, glassMaterial);
+        windshield.position.set(3.15, 1.3, 0);
+        windshield.rotation.z = 0.2;
+        truckGroup.add(windshield);
+
+        // Side windows
+        const sideWindowGeo = new THREE.BoxGeometry(0.8, 0.6, 0.05);
+        const leftWindow = new THREE.Mesh(sideWindowGeo, glassMaterial);
+        leftWindow.position.set(2.3, 1.5, 1.03);
+        truckGroup.add(leftWindow);
+        const rightWindow = leftWindow.clone();
+        rightWindow.position.z = -1.03;
+        truckGroup.add(rightWindow);
+
+        // Headlights
+        const headlightGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.1, 16);
+        const leftHeadlight = new THREE.Mesh(headlightGeo, lightMaterial);
+        leftHeadlight.rotation.z = Math.PI / 2;
+        leftHeadlight.position.set(3.9, 0.7, 0.6);
+        truckGroup.add(leftHeadlight);
+        const rightHeadlight = leftHeadlight.clone();
+        rightHeadlight.position.z = -0.6;
+        truckGroup.add(rightHeadlight);
+
+        // Grille
+        const grilleGeo = new THREE.BoxGeometry(0.1, 0.5, 1.2);
+        const grille = new THREE.Mesh(grilleGeo, chromeMaterial);
+        grille.position.set(3.9, 0.5, 0);
+        truckGroup.add(grille);
+
+        // Bumper
+        const bumperGeo = new THREE.BoxGeometry(0.2, 0.3, 2);
+        const frontBumper = new THREE.Mesh(bumperGeo, chromeMaterial);
+        frontBumper.position.set(3.95, 0.15, 0);
+        truckGroup.add(frontBumper);
+
+        // Side mirrors
+        const mirrorGeo = new THREE.BoxGeometry(0.3, 0.2, 0.05);
+        const leftMirror = new THREE.Mesh(mirrorGeo, darkMaterial);
+        leftMirror.position.set(2.8, 1.5, 1.2);
+        truckGroup.add(leftMirror);
+        const rightMirror = leftMirror.clone();
+        rightMirror.position.z = -1.2;
+        truckGroup.add(rightMirror);
+
+        // Exhaust pipes
+        const exhaustGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.5, 8);
+        const leftExhaust = new THREE.Mesh(exhaustGeo, chromeMaterial);
+        leftExhaust.position.set(1.5, 1.5, 1.2);
+        truckGroup.add(leftExhaust);
+        const rightExhaust = leftExhaust.clone();
+        rightExhaust.position.z = -1.2;
+        truckGroup.add(rightExhaust);
+
+        // Fuel tanks
+        const tankGeo = new THREE.CylinderGeometry(0.3, 0.3, 1.5, 16);
+        const leftTank = new THREE.Mesh(tankGeo, darkMaterial);
+        leftTank.rotation.x = Math.PI / 2;
+        leftTank.position.set(0.8, 0.3, 1.4);
+        truckGroup.add(leftTank);
+        const rightTank = leftTank.clone();
+        rightTank.position.z = -1.4;
+        truckGroup.add(rightTank);
+
+        // WHEELS - detailed with rims
+        const wheelGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.35, 24);
+        const rimGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.36, 8);
+
+        const wheelPositions = [
+            { x: 2.8, y: 0, z: 1.1 },
+            { x: 2.8, y: 0, z: -1.1 },
+            { x: 0, y: 0, z: 1.1 },
+            { x: 0, y: 0, z: -1.1 },
+            { x: -1.2, y: 0, z: 1.1 },
+            { x: -1.2, y: 0, z: -1.1 },
+            { x: -2.4, y: 0, z: 1.1 },
+            { x: -2.4, y: 0, z: -1.1 }
+        ];
+
+        const wheels = [];
+        wheelPositions.forEach(pos => {
+            const wheel = new THREE.Mesh(wheelGeometry, darkMaterial);
+            wheel.rotation.x = Math.PI / 2;
+            wheel.position.set(pos.x, pos.y, pos.z);
+            wheel.castShadow = true;
+            truckGroup.add(wheel);
+            wheels.push(wheel);
+
+            // Add rim
+            const rim = new THREE.Mesh(rimGeometry, chromeMaterial);
+            rim.rotation.x = Math.PI / 2;
+            rim.position.set(pos.x, pos.y, pos.z + (pos.z > 0 ? 0.01 : -0.01));
+            truckGroup.add(rim);
+        });
+
+        // Mudflaps
+        const flapGeo = new THREE.BoxGeometry(0.02, 0.4, 0.3);
+        wheelPositions.forEach(pos => {
+            if (pos.x < 2) {
+                const flap = new THREE.Mesh(flapGeo, darkMaterial);
+                flap.position.set(pos.x - 0.4, 0.2, pos.z);
+                truckGroup.add(flap);
+            }
+        });
+
+        // Rear lights
+        const rearLightGeo = new THREE.BoxGeometry(0.05, 0.3, 0.2);
+        const rearLightMat = new THREE.MeshPhongMaterial({
+            color: 0xff0000,
+            emissive: 0xff0000,
+            emissiveIntensity: 0.3
+        });
+        const leftRear = new THREE.Mesh(rearLightGeo, rearLightMat);
+        leftRear.position.set(-3.28, 1, 0.9);
+        truckGroup.add(leftRear);
+        const rightRear = leftRear.clone();
+        rightRear.position.z = -0.9;
+        truckGroup.add(rightRear);
+
+        // Position truck
+        truckGroup.position.set(8, -0.5, 0);
+        truckGroup.rotation.y = -0.4;
+        scene.add(truckGroup);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+        mainLight.position.set(10, 15, 10);
+        mainLight.castShadow = true;
+        scene.add(mainLight);
+
+        const fillLight = new THREE.DirectionalLight(0xc9a45c, 0.4);
+        fillLight.position.set(-10, 5, -10);
+        scene.add(fillLight);
+
+        const rimLight = new THREE.PointLight(0xc9a45c, 0.8);
+        rimLight.position.set(-5, 5, 5);
+        scene.add(rimLight);
+
+        camera.position.set(0, 3, 12);
+        camera.lookAt(0, 0, 0);
+
+        // Truck glow element
+        const truckGlow = document.getElementById('truck-glow');
+
+        // Scroll-based truck animation
+        let scrollProgress = 0;
+        let targetX = 8;
+        let currentX = 8;
+
+        window.addEventListener('scroll', () => {
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            scrollProgress = window.scrollY / scrollHeight;
+            targetX = 10 - (scrollProgress * 20);
+        });
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth truck movement
+            currentX += (targetX - currentX) * 0.05;
+            truckGroup.position.x = currentX;
+
+            // Bounce effect
+            truckGroup.position.y = -0.5 + Math.sin(Date.now() * 0.002) * 0.08;
+
+            // Slight tilt
+            truckGroup.rotation.z = Math.sin(Date.now() * 0.001) * 0.015;
+
+            // Rotate wheels based on position change
+            const wheelSpeed = (targetX - currentX) * 0.3;
+            wheels.forEach(wheel => {
+                wheel.rotation.y += wheelSpeed;
+            });
+
+            // Update glow position
+            const vector = new THREE.Vector3();
+            truckGroup.getWorldPosition(vector);
+            vector.project(camera);
+            const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+            const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
+            truckGlow.style.left = x + 'px';
+            truckGlow.style.top = y + 'px';
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ==========================================
+        // GSAP SCROLL ANIMATIONS
+        // ==========================================
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to('#progress-bar', {
+            scaleX: 1,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: 'body',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.3
+            }
+        });
+
+        ScrollTrigger.create({
+            start: 100,
+            onEnter: () => {
+                document.getElementById('header-bg').style.background = 'rgba(42, 33, 28, 0.7)';
+                document.getElementById('header-bg').style.backdropFilter = 'blur(12px)';
+            },
+            onLeaveBack: () => {
+                document.getElementById('header-bg').style.background = 'transparent';
+                document.getElementById('header-bg').style.backdropFilter = 'none';
+            }
+        });
+
+        document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+            ScrollTrigger.create({
+                trigger: el,
+                start: 'top 85%',
+                onEnter: () => el.classList.add('active'),
+                once: true
+            });
+        });
+
+        // ==========================================
+        // UI INTERACTIONS
+        // ==========================================
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Form submission
+        document.getElementById('quote-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Processing...</span>';
+            setTimeout(() => {
+                btn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Quote Request Sent!</span>';
+                btn.style.background = 'linear-gradient(to right, #22c55e, #16a34a)';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; e.target.reset(); }, 3000);
+            }, 1500);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Magnetic buttons
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+    </script>
+</body>
+</html>
