@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uship Van Lines Inc | Professional Long Distance Moving Services</title>
-    <meta name="description" content="Uship Van Lines Inc provides professional long-distance moving services across all 48 continental United States. Licensed, insured, and trusted.">
+    <title>MAHALO | Cosmic Delivery Services</title>
+    <meta name="description" content="MAHALO - Next-generation delivery services. Fast, reliable, out of this world.">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -358,8 +358,8 @@
                             <div class="absolute -inset-1 bg-cyan-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         </div>
                         <div class="hidden sm:block">
-                            <div class="font-display text-xl font-semibold tracking-wide">Uship Van Lines</div>
-                            <div class="text-[10px] text-slate-400 tracking-[0.2em] uppercase">Moving Dreams Forward</div>
+                            <div class="font-display text-xl font-semibold tracking-wide">MAHALO</div>
+                            <div class="text-[10px] text-slate-400 tracking-[0.2em] uppercase">Cosmic Delivery</div>
                         </div>
                     </a>
 
@@ -833,7 +833,7 @@
                                 </button>
 
                                 <p class="text-center text-slate-500 text-xs">
-                                    By submitting, you agree to receive communications from Uship Van Lines.
+                                    By submitting, you agree to receive communications from MAHALO.
                                 </p>
                             </form>
                         </div>
@@ -844,7 +844,7 @@
 
         <!-- CTA Section -->
         <section class="relative py-32 overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/90 via-slate-400/90 to-mint/90"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 via-cyan-300 to-mint"></div>
             <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, #0f172a 1px, transparent 0); background-size: 40px 40px;"></div>
 
             <div class="relative max-w-4xl mx-auto px-6 text-center">
@@ -883,8 +883,8 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="font-display text-xl font-semibold">Uship Van Lines Inc</div>
-                                <div class="text-[10px] text-slate-500 tracking-[0.2em] uppercase">Moving Dreams Forward</div>
+                                <div class="font-display text-xl font-semibold">MAHALO Inc</div>
+                                <div class="text-[10px] text-slate-500 tracking-[0.2em] uppercase">Cosmic Delivery</div>
                             </div>
                         </div>
                         <p class="text-slate-400 leading-relaxed max-w-md text-sm">
@@ -931,7 +931,7 @@
 
                 <div class="mt-16 pt-8 border-t border-slate-800/50">
                     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <p class="text-slate-500 text-xs">&copy; 2024 Uship Van Lines Inc. All rights reserved.</p>
+                        <p class="text-slate-500 text-xs">&copy; 2024 MAHALO Inc. All rights reserved.</p>
                         <p class="text-slate-600 text-[10px]">All moves are subject to carrier availability.</p>
                     </div>
                 </div>
@@ -1217,7 +1217,7 @@
 
                 // Draw distant mountains
                 jCtx.globalAlpha = 0.1;
-                jCtx.fillStyle = '#c9a45c';
+                jCtx.fillStyle = '#22d3ee';
                 jCtx.beginPath();
                 jCtx.moveTo(0, h * 0.6);
                 for (let x = 0; x < w; x += 100) {
@@ -1232,7 +1232,7 @@
 
                 // Draw clouds
                 jCtx.globalAlpha = 0.15;
-                jCtx.fillStyle = '#f5f0e8';
+                jCtx.fillStyle = '#67e8f9';
                 for (let i = 0; i < 5; i++) {
                     const cx = ((i * 200 + jOffset * 0.2) % (w + 200)) - 100;
                     const cy = 80 + i * 30;
@@ -1297,11 +1297,11 @@
                 // Draw buildings
                 cCtx.globalAlpha = 0.15;
                 buildings.forEach((b, i) => {
-                    cCtx.fillStyle = '#3d3029';
+                    cCtx.fillStyle = '#1e293b';
                     cCtx.fillRect(b.x, h - b.height, b.width, b.height);
 
                     // Windows
-                    cCtx.fillStyle = '#c9a45c';
+                    cCtx.fillStyle = '#22d3ee';
                     for (let row = 0; row < b.windows; row++) {
                         for (let col = 0; col < 3; col++) {
                             if (Math.random() > 0.3) {
@@ -1320,7 +1320,7 @@
                 cityLights.forEach(light => {
                     light.blink += light.speed;
                     cCtx.globalAlpha = (Math.sin(light.blink) + 1) * 0.15;
-                    cCtx.fillStyle = '#c9a45c';
+                    cCtx.fillStyle = '#22d3ee';
                     cCtx.beginPath();
                     cCtx.arc(light.x, light.y, 2, 0, Math.PI * 2);
                     cCtx.fill();
@@ -1337,7 +1337,7 @@
         }
 
         // ==========================================
-        // THREE.JS 3D TRUCK - FULLY DETAILED
+        // THREE.JS 3D UFO-TRUCK HYBRID - SPACEY DELIVERY
         // ==========================================
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
@@ -1348,279 +1348,391 @@
         renderer.shadowMap.enabled = true;
         container.appendChild(renderer.domElement);
 
-        // Create detailed truck
-        const truckGroup = new THREE.Group();
+        // Create UFO-Truck hybrid
+        const ufoTruckGroup = new THREE.Group();
 
-        // Materials
-        const goldMaterial = new THREE.MeshPhongMaterial({
-            color: 0xc9a45c,
+        // Materials - Cyan/Mint themed
+        const cyanMaterial = new THREE.MeshPhongMaterial({
+            color: 0x22d3ee,
             flatShading: false,
-            shininess: 100,
-            specular: 0x444444
+            shininess: 120,
+            specular: 0x67e8f9
         });
 
-        const darkGoldMaterial = new THREE.MeshPhongMaterial({
-            color: 0x8a6b52,
+        const mintMaterial = new THREE.MeshPhongMaterial({
+            color: 0x00d9a5,
             flatShading: false,
-            shininess: 80
+            shininess: 100
         });
 
         const darkMaterial = new THREE.MeshPhongMaterial({
-            color: 0x2a211c,
+            color: 0x0f172a,
             flatShading: false,
             shininess: 30
         });
 
-        const chromeMaterial = new THREE.MeshPhongMaterial({
-            color: 0xcccccc,
-            shininess: 150,
-            specular: 0xffffff
+        const glowMaterial = new THREE.MeshPhongMaterial({
+            color: 0x22d3ee,
+            emissive: 0x22d3ee,
+            emissiveIntensity: 0.8,
+            transparent: true,
+            opacity: 0.9
         });
 
         const glassMaterial = new THREE.MeshPhongMaterial({
-            color: 0x87ceeb,
+            color: 0x67e8f9,
             transparent: true,
-            opacity: 0.4,
+            opacity: 0.3,
             shininess: 200
         });
 
-        const lightMaterial = new THREE.MeshPhongMaterial({
-            color: 0xffff00,
-            emissive: 0xffff00,
-            emissiveIntensity: 0.5
+        const chromeMaterial = new THREE.MeshPhongMaterial({
+            color: 0xe2e8f0,
+            shininess: 200,
+            specular: 0xffffff
         });
 
-        // CARGO BODY (main container)
-        const bodyGeometry = new THREE.BoxGeometry(4.5, 2.5, 2.2);
-        const body = new THREE.Mesh(bodyGeometry, goldMaterial);
-        body.position.set(-1, 1.5, 0);
-        body.castShadow = true;
-        truckGroup.add(body);
+        // UFO DISC BASE
+        const discGeometry = new THREE.CylinderGeometry(3, 4, 0.8, 32);
+        const disc = new THREE.Mesh(discGeometry, cyanMaterial);
+        disc.position.set(0, 0, 0);
+        ufoTruckGroup.add(disc);
 
-        // Body details - horizontal lines
-        for (let i = 0; i < 5; i++) {
-            const lineGeo = new THREE.BoxGeometry(4.5, 0.05, 0.05);
-            const line = new THREE.Mesh(lineGeo, darkGoldMaterial);
-            line.position.set(-1, 0.5 + i * 0.5, 1.12);
-            truckGroup.add(line);
-            const line2 = line.clone();
-            line2.position.z = -1.12;
-            truckGroup.add(line2);
+        // UFO bottom ring (glowing)
+        const ringGeometry = new THREE.TorusGeometry(3.5, 0.15, 16, 48);
+        const ring = new THREE.Mesh(ringGeometry, glowMaterial);
+        ring.rotation.x = Math.PI / 2;
+        ring.position.set(0, -0.3, 0);
+        ufoTruckGroup.add(ring);
+
+        // Second inner ring
+        const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.1, 16, 32), glowMaterial);
+        ring2.rotation.x = Math.PI / 2;
+        ring2.position.set(0, -0.35, 0);
+        ufoTruckGroup.add(ring2);
+
+        // CARGO CONTAINER on top (truck part)
+        const cargoGeo = new THREE.BoxGeometry(4, 1.8, 2);
+        const cargo = new THREE.Mesh(cargoGeo, mintMaterial);
+        cargo.position.set(0, 1.3, 0);
+        ufoTruckGroup.add(cargo);
+
+        // Cargo panel lines
+        for (let i = 0; i < 4; i++) {
+            const lineGeo = new THREE.BoxGeometry(4, 0.03, 0.03);
+            const line = new THREE.Mesh(lineGeo, cyanMaterial);
+            line.position.set(0, 0.6 + i * 0.4, 1.02);
+            ufoTruckGroup.add(line);
         }
 
-        // Company name stripe
-        const stripeGeo = new THREE.BoxGeometry(3.5, 0.4, 0.02);
-        const stripe = new THREE.Mesh(stripeGeo, darkGoldMaterial);
-        stripe.position.set(-1, 2, 1.12);
-        truckGroup.add(stripe);
+        // === MAHALO TEXT FUNCTION ===
+        function createTextTexture(text, fontSize, color, bgColor) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 128;
+            const ctx = canvas.getContext('2d');
 
-        // CABIN
-        const cabinGeo = new THREE.BoxGeometry(1.8, 1.8, 2);
-        const cabin = new THREE.Mesh(cabinGeo, darkGoldMaterial);
-        cabin.position.set(2.3, 1.1, 0);
-        cabin.castShadow = true;
-        truckGroup.add(cabin);
+            // Background
+            if (bgColor) {
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
 
-        // Cabin roof
-        const roofGeo = new THREE.BoxGeometry(1.9, 0.3, 2.1);
-        const roof = new THREE.Mesh(roofGeo, darkGoldMaterial);
-        roof.position.set(2.3, 2.1, 0);
-        truckGroup.add(roof);
+            // Text
+            ctx.fillStyle = color;
+            ctx.font = `bold ${fontSize}px Space Grotesk, Arial, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
-        // Hood
-        const hoodGeo = new THREE.BoxGeometry(0.8, 0.8, 1.8);
-        const hood = new THREE.Mesh(hoodGeo, darkGoldMaterial);
-        hood.position.set(3.5, 0.6, 0);
-        truckGroup.add(hood);
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.needsUpdate = true;
+            return texture;
+        }
 
-        // Windshield
-        const windshieldGeo = new THREE.BoxGeometry(0.1, 1, 1.6);
-        const windshield = new THREE.Mesh(windshieldGeo, glassMaterial);
-        windshield.position.set(3.15, 1.3, 0);
-        windshield.rotation.z = 0.2;
-        truckGroup.add(windshield);
+        // MAHALO text on cargo container (front side)
+        const cargoTextTexture = createTextTexture('MAHALO', 90, '#0f172a', 'transparent');
+        const cargoTextMaterial = new THREE.MeshBasicMaterial({
+            map: cargoTextTexture,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+        const cargoTextPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(3, 0.75),
+            cargoTextMaterial
+        );
+        cargoTextPlane.position.set(0, 1.3, 1.02);
+        ufoTruckGroup.add(cargoTextPlane);
 
-        // Side windows
-        const sideWindowGeo = new THREE.BoxGeometry(0.8, 0.6, 0.05);
-        const leftWindow = new THREE.Mesh(sideWindowGeo, glassMaterial);
-        leftWindow.position.set(2.3, 1.5, 1.03);
-        truckGroup.add(leftWindow);
-        const rightWindow = leftWindow.clone();
-        rightWindow.position.z = -1.03;
-        truckGroup.add(rightWindow);
+        // MAHALO text on cargo container (back side)
+        const cargoTextPlaneBack = cargoTextPlane.clone();
+        cargoTextPlaneBack.position.z = -1.02;
+        cargoTextPlaneBack.rotation.y = Math.PI;
+        ufoTruckGroup.add(cargoTextPlaneBack);
 
-        // Headlights
-        const headlightGeo = new THREE.CylinderGeometry(0.15, 0.15, 0.1, 16);
-        const leftHeadlight = new THREE.Mesh(headlightGeo, lightMaterial);
-        leftHeadlight.rotation.z = Math.PI / 2;
-        leftHeadlight.position.set(3.9, 0.7, 0.6);
-        truckGroup.add(leftHeadlight);
-        const rightHeadlight = leftHeadlight.clone();
-        rightHeadlight.position.z = -0.6;
-        truckGroup.add(rightHeadlight);
+        // MAHALO text on UFO disc (top surface)
+        const discTextTexture = createTextTexture('MAHALO', 80, '#0f172a', 'transparent');
+        const discTextMaterial = new THREE.MeshBasicMaterial({
+            map: discTextTexture,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+        const discTextPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(2.5, 0.6),
+            discTextMaterial
+        );
+        discTextPlane.rotation.x = -Math.PI / 2;
+        discTextPlane.position.set(-1, 0.42, 0);
+        ufoTruckGroup.add(discTextPlane);
 
-        // Grille
-        const grilleGeo = new THREE.BoxGeometry(0.1, 0.5, 1.2);
-        const grille = new THREE.Mesh(grilleGeo, chromeMaterial);
-        grille.position.set(3.9, 0.5, 0);
-        truckGroup.add(grille);
+        // DOME COCKPIT
+        const domeGeo = new THREE.SphereGeometry(1.2, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+        const dome = new THREE.Mesh(domeGeo, glassMaterial);
+        dome.position.set(1.8, 0.4, 0);
+        ufoTruckGroup.add(dome);
 
-        // Bumper
-        const bumperGeo = new THREE.BoxGeometry(0.2, 0.3, 2);
-        const frontBumper = new THREE.Mesh(bumperGeo, chromeMaterial);
-        frontBumper.position.set(3.95, 0.15, 0);
-        truckGroup.add(frontBumper);
+        // Cockpit base
+        const cockpitBase = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.3, 0.3, 24), cyanMaterial);
+        cockpitBase.position.set(1.8, 0.25, 0);
+        ufoTruckGroup.add(cockpitBase);
 
-        // Side mirrors
-        const mirrorGeo = new THREE.BoxGeometry(0.3, 0.2, 0.05);
-        const leftMirror = new THREE.Mesh(mirrorGeo, darkMaterial);
-        leftMirror.position.set(2.8, 1.5, 1.2);
-        truckGroup.add(leftMirror);
-        const rightMirror = leftMirror.clone();
-        rightMirror.position.z = -1.2;
-        truckGroup.add(rightMirror);
+        // Antenna
+        const antennaGeo = new THREE.CylinderGeometry(0.03, 0.03, 1, 8);
+        const antenna = new THREE.Mesh(antennaGeo, chromeMaterial);
+        antenna.position.set(1.8, 1.5, 0);
+        ufoTruckGroup.add(antenna);
 
-        // Exhaust pipes
-        const exhaustGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.5, 8);
-        const leftExhaust = new THREE.Mesh(exhaustGeo, chromeMaterial);
-        leftExhaust.position.set(1.5, 1.5, 1.2);
-        truckGroup.add(leftExhaust);
-        const rightExhaust = leftExhaust.clone();
-        rightExhaust.position.z = -1.2;
-        truckGroup.add(rightExhaust);
+        // Antenna top ball
+        const antennaBall = new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 16), glowMaterial);
+        antennaBall.position.set(1.8, 2, 0);
+        ufoTruckGroup.add(antennaBall);
 
-        // Fuel tanks
-        const tankGeo = new THREE.CylinderGeometry(0.3, 0.3, 1.5, 16);
-        const leftTank = new THREE.Mesh(tankGeo, darkMaterial);
-        leftTank.rotation.x = Math.PI / 2;
-        leftTank.position.set(0.8, 0.3, 1.4);
-        truckGroup.add(leftTank);
-        const rightTank = leftTank.clone();
-        rightTank.position.z = -1.4;
-        truckGroup.add(rightTank);
-
-        // WHEELS - detailed with rims
-        const wheelGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.35, 24);
-        const rimGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.36, 8);
-
-        const wheelPositions = [
-            { x: 2.8, y: 0, z: 1.1 },
-            { x: 2.8, y: 0, z: -1.1 },
-            { x: 0, y: 0, z: 1.1 },
-            { x: 0, y: 0, z: -1.1 },
-            { x: -1.2, y: 0, z: 1.1 },
-            { x: -1.2, y: 0, z: -1.1 },
-            { x: -2.4, y: 0, z: 1.1 },
-            { x: -2.4, y: 0, z: -1.1 }
+        // THRUSTERS (bottom)
+        const thrusterPositions = [
+            { x: 2, z: 1.5 }, { x: 2, z: -1.5 },
+            { x: -2, z: 1.5 }, { x: -2, z: -1.5 },
+            { x: 0, z: 2 }, { x: 0, z: -2 }
         ];
 
-        const wheels = [];
-        wheelPositions.forEach(pos => {
-            const wheel = new THREE.Mesh(wheelGeometry, darkMaterial);
-            wheel.rotation.x = Math.PI / 2;
-            wheel.position.set(pos.x, pos.y, pos.z);
-            wheel.castShadow = true;
-            truckGroup.add(wheel);
-            wheels.push(wheel);
+        const thrusters = [];
+        thrusterPositions.forEach(pos => {
+            const thrusterGeo = new THREE.CylinderGeometry(0.25, 0.35, 0.4, 16);
+            const thruster = new THREE.Mesh(thrusterGeo, darkMaterial);
+            thruster.position.set(pos.x, -0.5, pos.z);
+            ufoTruckGroup.add(thruster);
 
-            // Add rim
-            const rim = new THREE.Mesh(rimGeometry, chromeMaterial);
-            rim.rotation.x = Math.PI / 2;
-            rim.position.set(pos.x, pos.y, pos.z + (pos.z > 0 ? 0.01 : -0.01));
-            truckGroup.add(rim);
+            // Thruster glow
+            const thrusterGlow = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.2, 0.3, 0.3, 16),
+                new THREE.MeshPhongMaterial({
+                    color: 0x22d3ee,
+                    emissive: 0x22d3ee,
+                    emissiveIntensity: 1,
+                    transparent: true,
+                    opacity: 0.7
+                })
+            );
+            thrusterGlow.position.set(pos.x, -0.7, pos.z);
+            ufoTruckGroup.add(thrusterGlow);
+            thrusters.push(thrusterGlow);
         });
 
-        // Mudflaps
-        const flapGeo = new THREE.BoxGeometry(0.02, 0.4, 0.3);
-        wheelPositions.forEach(pos => {
-            if (pos.x < 2) {
-                const flap = new THREE.Mesh(flapGeo, darkMaterial);
-                flap.position.set(pos.x - 0.4, 0.2, pos.z);
-                truckGroup.add(flap);
-            }
+        // HEADLIGHTS
+        const headlightGeo = new THREE.SphereGeometry(0.2, 16, 16);
+        const headlightMat = new THREE.MeshPhongMaterial({
+            color: 0x67e8f9,
+            emissive: 0x22d3ee,
+            emissiveIntensity: 1
         });
+        const leftHeadlight = new THREE.Mesh(headlightGeo, headlightMat);
+        leftHeadlight.position.set(3.5, 0, 0.8);
+        ufoTruckGroup.add(leftHeadlight);
+        const rightHeadlight = leftHeadlight.clone();
+        rightHeadlight.position.z = -0.8;
+        ufoTruckGroup.add(rightHeadlight);
 
-        // Rear lights
-        const rearLightGeo = new THREE.BoxGeometry(0.05, 0.3, 0.2);
-        const rearLightMat = new THREE.MeshPhongMaterial({
-            color: 0xff0000,
-            emissive: 0xff0000,
-            emissiveIntensity: 0.3
-        });
-        const leftRear = new THREE.Mesh(rearLightGeo, rearLightMat);
-        leftRear.position.set(-3.28, 1, 0.9);
-        truckGroup.add(leftRear);
-        const rightRear = leftRear.clone();
-        rightRear.position.z = -0.9;
-        truckGroup.add(rightRear);
+        // Decorative orbs (floating around)
+        const orbs = [];
+        for (let i = 0; i < 8; i++) {
+            const orbGeo = new THREE.SphereGeometry(0.08, 8, 8);
+            const orb = new THREE.Mesh(orbGeo, glowMaterial);
+            orb.userData = {
+                angle: (i / 8) * Math.PI * 2,
+                radius: 4.5 + Math.random() * 0.5,
+                speed: 0.5 + Math.random() * 0.5,
+                yOffset: Math.random() * 0.5
+            };
+            orbs.push(orb);
+            scene.add(orb);
+        }
 
-        // Position truck
-        truckGroup.position.set(8, -0.5, 0);
-        truckGroup.rotation.y = -0.4;
-        scene.add(truckGroup);
+        // Particle trail system
+        const trailParticles = [];
+        for (let i = 0; i < 30; i++) {
+            const particleGeo = new THREE.SphereGeometry(0.05, 4, 4);
+            const particle = new THREE.Mesh(particleGeo, new THREE.MeshPhongMaterial({
+                color: 0x22d3ee,
+                emissive: 0x22d3ee,
+                emissiveIntensity: 0.5,
+                transparent: true,
+                opacity: 0
+            }));
+            particle.userData = { life: 0, maxLife: 60 };
+            trailParticles.push(particle);
+            scene.add(particle);
+        }
+
+        // Position UFO-Truck
+        ufoTruckGroup.position.set(12, 2, 0);
+        scene.add(ufoTruckGroup);
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
         scene.add(ambientLight);
 
-        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+        const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
         mainLight.position.set(10, 15, 10);
-        mainLight.castShadow = true;
         scene.add(mainLight);
 
-        const fillLight = new THREE.DirectionalLight(0xc9a45c, 0.4);
-        fillLight.position.set(-10, 5, -10);
-        scene.add(fillLight);
+        const cyanLight = new THREE.PointLight(0x22d3ee, 1, 20);
+        cyanLight.position.set(0, 5, 0);
+        scene.add(cyanLight);
 
-        const rimLight = new THREE.PointLight(0xc9a45c, 0.8);
-        rimLight.position.set(-5, 5, 5);
-        scene.add(rimLight);
+        const mintLight = new THREE.PointLight(0x00d9a5, 0.6, 15);
+        mintLight.position.set(-5, 3, 5);
+        scene.add(mintLight);
 
-        camera.position.set(0, 3, 12);
+        camera.position.set(0, 4, 14);
         camera.lookAt(0, 0, 0);
 
         // Truck glow element
         const truckGlow = document.getElementById('truck-glow');
 
-        // Scroll-based truck animation
+        // ANIMATION SCENARIO - Story-driven movement
         let scrollProgress = 0;
-        let targetX = 8;
-        let currentX = 8;
+        let time = 0;
+
+        // Animation states based on scroll
+        const animationStages = {
+            // 0-20%: UFO appears from top right, hovering
+            // 20-40%: Flies across screen, collecting packages
+            // 40-60%: Hovers in center, loading animation
+            // 60-80%: Speeds up, flies toward destination
+            // 80-100%: Arrival, gentle landing
+        };
 
         window.addEventListener('scroll', () => {
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
             scrollProgress = window.scrollY / scrollHeight;
-            targetX = 10 - (scrollProgress * 20);
         });
 
-        // Animation loop
+        // Animation loop with scripted scenario
         function animate() {
             requestAnimationFrame(animate);
+            time += 0.016;
 
-            // Smooth truck movement
-            currentX += (targetX - currentX) * 0.05;
-            truckGroup.position.x = currentX;
+            // Stage-based positioning
+            let targetX, targetY, targetRotY, targetRotZ;
 
-            // Bounce effect
-            truckGroup.position.y = -0.5 + Math.sin(Date.now() * 0.002) * 0.08;
+            if (scrollProgress < 0.15) {
+                // STAGE 1: Entrance from top-right
+                const stageProgress = scrollProgress / 0.15;
+                targetX = 12 - stageProgress * 6;
+                targetY = 5 - stageProgress * 2;
+                targetRotY = -0.5 + stageProgress * 0.3;
+                targetRotZ = Math.sin(time * 2) * 0.05;
+            } else if (scrollProgress < 0.35) {
+                // STAGE 2: Flying across, picking up
+                const stageProgress = (scrollProgress - 0.15) / 0.2;
+                targetX = 6 - stageProgress * 8;
+                targetY = 3 + Math.sin(stageProgress * Math.PI) * 1;
+                targetRotY = -0.2 + stageProgress * 0.1;
+                targetRotZ = Math.sin(time * 3) * 0.08;
+            } else if (scrollProgress < 0.55) {
+                // STAGE 3: Hover in center, loading
+                const stageProgress = (scrollProgress - 0.35) / 0.2;
+                targetX = -2 + Math.sin(time * 0.5) * 0.5;
+                targetY = 2 + Math.sin(time * 2) * 0.3;
+                targetRotY = Math.sin(time * 0.3) * 0.2;
+                targetRotZ = Math.sin(time * 1.5) * 0.03;
+            } else if (scrollProgress < 0.8) {
+                // STAGE 4: Speed toward destination
+                const stageProgress = (scrollProgress - 0.55) / 0.25;
+                targetX = -2 - stageProgress * 8;
+                targetY = 2 + stageProgress * 1;
+                targetRotY = 0.3;
+                targetRotZ = -0.1;
+            } else {
+                // STAGE 5: Arrival and landing
+                const stageProgress = (scrollProgress - 0.8) / 0.2;
+                targetX = -10 - stageProgress * 2;
+                targetY = 2 - stageProgress * 1;
+                targetRotY = 0.2;
+                targetRotZ = 0;
+            }
 
-            // Slight tilt
-            truckGroup.rotation.z = Math.sin(Date.now() * 0.001) * 0.015;
+            // Smooth interpolation
+            ufoTruckGroup.position.x += (targetX - ufoTruckGroup.position.x) * 0.05;
+            ufoTruckGroup.position.y += (targetY - ufoTruckGroup.position.y) * 0.05;
+            ufoTruckGroup.rotation.y += (targetRotY - ufoTruckGroup.rotation.y) * 0.05;
+            ufoTruckGroup.rotation.z += (targetRotZ - ufoTruckGroup.rotation.z) * 0.1;
 
-            // Rotate wheels based on position change
-            const wheelSpeed = (targetX - currentX) * 0.3;
-            wheels.forEach(wheel => {
-                wheel.rotation.y += wheelSpeed;
+            // Floating hover effect
+            ufoTruckGroup.position.y += Math.sin(time * 3) * 0.02;
+
+            // Ring rotation
+            ring.rotation.z = time * 0.5;
+            ring2.rotation.z = -time * 0.7;
+
+            // Thruster pulsing
+            thrusters.forEach((t, i) => {
+                t.material.emissiveIntensity = 0.5 + Math.sin(time * 5 + i) * 0.5;
+                t.scale.y = 0.8 + Math.sin(time * 8 + i) * 0.3;
+            });
+
+            // Antenna ball pulsing
+            antennaBall.material.emissiveIntensity = 0.5 + Math.sin(time * 4) * 0.5;
+
+            // Floating orbs around UFO
+            orbs.forEach((orb, i) => {
+                const data = orb.userData;
+                data.angle += data.speed * 0.02;
+                orb.position.x = ufoTruckGroup.position.x + Math.cos(data.angle) * data.radius;
+                orb.position.z = Math.sin(data.angle) * data.radius;
+                orb.position.y = ufoTruckGroup.position.y + Math.sin(time * 2 + i) * data.yOffset;
+            });
+
+            // Trail particles
+            if (Math.random() > 0.7) {
+                const deadParticle = trailParticles.find(p => p.userData.life <= 0);
+                if (deadParticle) {
+                    deadParticle.position.copy(ufoTruckGroup.position);
+                    deadParticle.position.x += (Math.random() - 0.5) * 2;
+                    deadParticle.position.y -= 0.5;
+                    deadParticle.position.z += (Math.random() - 0.5) * 2;
+                    deadParticle.userData.life = deadParticle.userData.maxLife;
+                }
+            }
+
+            trailParticles.forEach(p => {
+                if (p.userData.life > 0) {
+                    p.userData.life--;
+                    const lifeRatio = p.userData.life / p.userData.maxLife;
+                    p.material.opacity = lifeRatio * 0.6;
+                    p.position.y -= 0.02;
+                    p.position.x += 0.01;
+                    p.scale.setScalar(lifeRatio);
+                }
             });
 
             // Update glow position
             const vector = new THREE.Vector3();
-            truckGroup.getWorldPosition(vector);
+            ufoTruckGroup.getWorldPosition(vector);
             vector.project(camera);
-            const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-            const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
-            truckGlow.style.left = x + 'px';
-            truckGlow.style.top = y + 'px';
+            const glowX = (vector.x * 0.5 + 0.5) * window.innerWidth;
+            const glowY = (-vector.y * 0.5 + 0.5) * window.innerHeight;
+            truckGlow.style.left = glowX + 'px';
+            truckGlow.style.top = glowY + 'px';
 
             renderer.render(scene, camera);
         }
@@ -1652,7 +1764,7 @@
         ScrollTrigger.create({
             start: 100,
             onEnter: () => {
-                document.getElementById('header-bg').style.background = 'rgba(42, 33, 28, 0.7)';
+                document.getElementById('header-bg').style.background = 'rgba(15, 23, 42, 0.85)';
                 document.getElementById('header-bg').style.backdropFilter = 'blur(12px)';
             },
             onLeaveBack: () => {
