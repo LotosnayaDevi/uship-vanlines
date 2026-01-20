@@ -1470,20 +1470,59 @@
         cargoTextPlaneBack.rotation.y = Math.PI;
         ufoTruckGroup.add(cargoTextPlaneBack);
 
-        // MAHALO text on UFO disc (top surface)
-        const discTextTexture = createTextTexture('MAHALO', 80, '#0f172a', 'transparent');
-        const discTextMaterial = new THREE.MeshBasicMaterial({
-            map: discTextTexture,
-            transparent: true,
+        // MARQUEE TEXT BAND around UFO disc - single continuous scrolling ring
+        const marqueeCanvas = document.createElement('canvas');
+        marqueeCanvas.width = 2048;
+        marqueeCanvas.height = 64;
+        const marqueeCtx = marqueeCanvas.getContext('2d');
+        const marqueeText = '  ★  МАХАЛО ТА НЕ ВПАЛО  ★  МАХАЛО ТА НЕ ВПАЛО  ★  МАХАЛО ТА НЕ ВПАЛО  ★  МАХАЛО ТА НЕ ВПАЛО  ';
+
+        const marqueeTexture = new THREE.CanvasTexture(marqueeCanvas);
+        marqueeTexture.wrapS = THREE.RepeatWrapping;
+        marqueeTexture.wrapT = THREE.ClampToEdgeWrapping;
+
+        function updateMarquee() {
+            marqueeCtx.clearRect(0, 0, marqueeCanvas.width, marqueeCanvas.height);
+
+            // Dark background band
+            marqueeCtx.fillStyle = '#0f172a';
+            marqueeCtx.fillRect(0, 0, marqueeCanvas.width, marqueeCanvas.height);
+
+            // Top and bottom border glow
+            marqueeCtx.fillStyle = '#22d3ee';
+            marqueeCtx.fillRect(0, 0, marqueeCanvas.width, 3);
+            marqueeCtx.fillRect(0, marqueeCanvas.height - 3, marqueeCanvas.width, 3);
+
+            // Glowing text
+            marqueeCtx.shadowColor = '#22d3ee';
+            marqueeCtx.shadowBlur = 8;
+            marqueeCtx.fillStyle = '#67e8f9';
+            marqueeCtx.font = 'bold 36px Space Grotesk, Arial, sans-serif';
+            marqueeCtx.textBaseline = 'middle';
+            marqueeCtx.fillText(marqueeText, 0, marqueeCanvas.height / 2);
+
+            marqueeTexture.needsUpdate = true;
+        }
+
+        // Initial draw
+        updateMarquee();
+
+        const marqueeMaterial = new THREE.MeshBasicMaterial({
+            map: marqueeTexture,
             side: THREE.DoubleSide
         });
-        const discTextPlane = new THREE.Mesh(
-            new THREE.PlaneGeometry(2.5, 0.6),
-            discTextMaterial
-        );
-        discTextPlane.rotation.x = -Math.PI / 2;
-        discTextPlane.position.set(-1, 0.42, 0);
-        ufoTruckGroup.add(discTextPlane);
+
+        // Create a single torus/cylinder band around the UFO disc edge
+        const bandRadius = 3.5;
+        const bandTube = 0.2;
+        const bandGeometry = new THREE.TorusGeometry(bandRadius, bandTube, 8, 64);
+        const marqueeBand = new THREE.Mesh(bandGeometry, marqueeMaterial);
+        marqueeBand.rotation.x = Math.PI / 2;
+        marqueeBand.position.y = 0;
+        ufoTruckGroup.add(marqueeBand);
+
+        // Animate texture offset for scrolling effect
+        let textureOffset = 0;
 
         // DOME COCKPIT
         const domeGeo = new THREE.SphereGeometry(1.2, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
@@ -1683,6 +1722,10 @@
             // Ring rotation
             ring.rotation.z = time * 0.5;
             ring2.rotation.z = -time * 0.7;
+
+            // Update marquee text animation - scroll texture around the band
+            textureOffset += 0.002;
+            marqueeTexture.offset.x = textureOffset;
 
             // Thruster pulsing
             thrusters.forEach((t, i) => {
